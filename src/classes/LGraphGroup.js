@@ -5,7 +5,7 @@ export class LGraphGroup {
         this._ctor(title);
     }
 
-    _ctor = function(title) {
+    _ctor(title) {
         this.title = title || "Group";
         this.font_size = 24;
         this.color = LGraphCanvas.node_colors.pale_blue
@@ -46,14 +46,14 @@ export class LGraphGroup {
         });
     };
 
-    configure = function(o) {
+    configure(o) {
         this.title = o.title;
         this._bounding.set(o.bounding);
         this.color = o.color;
         this.font = o.font;
     };
 
-    serialize = function() {
+    serialize() {
         var b = this._bounding;
         return {
             title: this.title,
@@ -68,7 +68,7 @@ export class LGraphGroup {
         };
     };
 
-    move = function(deltax, deltay, ignore_nodes) {
+    move(deltax, deltay, ignore_nodes) {
         this._pos[0] += deltax;
         this._pos[1] += deltay;
         if (ignore_nodes) {
@@ -81,7 +81,7 @@ export class LGraphGroup {
         }
     };
 
-    recomputeInsideNodes = function() {
+    recomputeInsideNodes() {
         this._nodes.length = 0;
         var nodes = this.graph._nodes;
         var node_bounding = new Float32Array(4);

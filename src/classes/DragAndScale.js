@@ -19,7 +19,7 @@ export class DragAndScale {
     }
 
 
-    bindEvents = function(element) {
+    bindEvents(element) {
         this.last_mouse = new Float32Array(2);
 
         this._binded_mouse_callback = this.onMouse.bind(this);
@@ -35,7 +35,7 @@ export class DragAndScale {
         element.addEventListener("wheel", this._binded_mouse_callback, false);
     };
 
-    computeVisibleArea = function() {
+    computeVisibleArea() {
         if (!this.element) {
             this.visible_area[0] = this.visible_area[1] = this.visible_area[2] = this.visible_area[3] = 0;
             return;
@@ -52,7 +52,7 @@ export class DragAndScale {
         this.visible_area[3] = endy - starty;
     };
 
-    onMouse = function(e) {
+    onMouse(e) {
         if (!this.enabled) {
             return;
         }
@@ -133,12 +133,12 @@ export class DragAndScale {
         return false;
     };
 
-    toCanvasContext = function(ctx) {
+    toCanvasContext(ctx) {
         ctx.scale(this.scale, this.scale);
         ctx.translate(this.offset[0], this.offset[1]);
     };
 
-    convertOffsetToCanvas = function(pos) {
+    convertOffsetToCanvas(pos) {
         //return [pos[0] / this.scale - this.offset[0], pos[1] / this.scale - this.offset[1]];
         return [
             (pos[0] + this.offset[0]) * this.scale,
@@ -146,14 +146,14 @@ export class DragAndScale {
         ];
     };
 
-    convertCanvasToOffset = function(pos, out) {
+    convertCanvasToOffset(pos, out) {
         out = out || [0, 0];
         out[0] = pos[0] / this.scale - this.offset[0];
         out[1] = pos[1] / this.scale - this.offset[1];
         return out;
     };
 
-    mouseDrag = function(x, y) {
+    mouseDrag(x, y) {
         this.offset[0] += x / this.scale;
         this.offset[1] += y / this.scale;
 
@@ -162,7 +162,7 @@ export class DragAndScale {
         }
     };
 
-    changeScale = function(value, zooming_center) {
+    changeScale(value, zooming_center) {
         if (value < this.min_scale) {
             value = this.min_scale;
         } else if (value > this.max_scale) {
@@ -206,11 +206,11 @@ export class DragAndScale {
         }
     };
 
-    changeDeltaScale = function(value, zooming_center) {
+    changeDeltaScale(value, zooming_center) {
         this.changeScale(this.scale * value, zooming_center);
     };
 
-    reset = function() {
+    reset() {
         this.scale = 1;
         this.offset[0] = 0;
         this.offset[1] = 0;

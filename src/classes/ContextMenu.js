@@ -197,7 +197,7 @@ export class ContextMenu {
     }
 
 
-    addItem = function(name, value, options) {
+    addItem(name, value, options) {
         var that = this;
         options = options || {};
 
@@ -323,7 +323,7 @@ export class ContextMenu {
         return element;
     };
 
-    close = function(e, ignore_parent_menu) {
+    close(e, ignore_parent_menu) {
         if (this.root.parentNode) {
             this.root.parentNode.removeChild(this.root);
         }
@@ -349,7 +349,7 @@ export class ContextMenu {
     };
 
     //this code is used to trigger events easily (used in the context menu mouseleave
-    static trigger = function(element, event_name, params, origin) {
+    static trigger(element, event_name, params, origin) {
         var evt = document.createEvent("CustomEvent");
         evt.initCustomEvent(event_name, true, true, params); //canBubble, cancelable, detail
         evt.srcElement = origin;
@@ -363,21 +363,21 @@ export class ContextMenu {
     };
 
     //returns the top most menu
-    getTopMenu = function() {
+    getTopMenu() {
         if (this.options.parentMenu) {
             return this.options.parentMenu.getTopMenu();
         }
         return this;
     };
 
-    getFirstEvent = function() {
+    getFirstEvent() {
         if (this.options.parentMenu) {
             return this.options.parentMenu.getFirstEvent();
         }
         return this.options.event;
     };
 
-    static isCursorOverElement = function(event, element) {
+    static isCursorOverElement(event, element) {
         var left = event.clientX;
         var top = event.clientY;
         var rect = element.getBoundingClientRect();

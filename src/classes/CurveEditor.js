@@ -8,7 +8,7 @@ export class CurveEditor {
         this.margin = 5;
     }
 
-    static sampleCurve = function(f, points) {
+    static sampleCurve(f, points) {
         if (!points)
             return;
         for (var i = 0; i < points.length - 1; ++i) {
@@ -25,7 +25,7 @@ export class CurveEditor {
         return 0;
     };
 
-    draw = function(ctx, size, graphcanvas, background_color, line_color, inactive) {
+    draw(ctx, size, graphcanvas, background_color, line_color, inactive) {
         var points = this.points;
         if (!points)
             return;
@@ -68,7 +68,7 @@ export class CurveEditor {
     };
 
     //localpos is mouse in curve editor space
-    onMouseDown = function(localpos, graphcanvas) {
+    onMouseDown(localpos, graphcanvas) {
         var points = this.points;
         if (!points)
             return;
@@ -98,7 +98,7 @@ export class CurveEditor {
             return true;
     };
 
-    onMouseMove = function(localpos, graphcanvas) {
+    onMouseMove(localpos, graphcanvas) {
         var points = this.points;
         if (!points)
             return;
@@ -131,12 +131,12 @@ export class CurveEditor {
         }
     };
 
-    onMouseUp = function(localpos, graphcanvas) {
+    onMouseUp(localpos, graphcanvas) {
         this.selected = -1;
         return false;
     };
 
-    getCloserPoint = function(pos, max_dist) {
+    getCloserPoint(pos, max_dist) {
         var points = this.points;
         if (!points)
             return -1;

@@ -142,7 +142,7 @@ export class LGraphCanvas {
      *
      * @method clear
      */
-    clear = function() {
+    clear() {
         this.frame = 0;
         this.last_draw_time = 0;
         this.render_time = 0;
@@ -185,7 +185,7 @@ export class LGraphCanvas {
      * @method setGraph
      * @param {LGraph} graph
      */
-    setGraph = function(graph, skip_clear) {
+    setGraph(graph, skip_clear) {
         if (this.graph == graph) {
             return;
         }
@@ -214,7 +214,7 @@ export class LGraphCanvas {
      * @method openSubgraph
      * @param {LGraph} graph
      */
-    openSubgraph = function(graph) {
+    openSubgraph(graph) {
         if (!graph) {
             throw "graph cannot be null";
         }
@@ -242,7 +242,7 @@ export class LGraphCanvas {
      * @method closeSubgraph
      * @param {LGraph} assigns a graph
      */
-    closeSubgraph = function() {
+    closeSubgraph() {
         if (!this._graph_stack || this._graph_stack.length == 0) {
             return;
         }
@@ -263,7 +263,7 @@ export class LGraphCanvas {
      * @method getCurrentGraph
      * @return {LGraph} the active graph
      */
-    getCurrentGraph = function() {
+    getCurrentGraph() {
         return this.graph;
     };
 
@@ -273,7 +273,7 @@ export class LGraphCanvas {
      * @method setCanvas
      * @param {Canvas} assigns a canvas (also accepts the ID of the element (not a selector)
      */
-    setCanvas = function(canvas, skip_events) {
+    setCanvas(canvas, skip_events) {
         var that = this;
 
         if (canvas) {
@@ -344,11 +344,11 @@ export class LGraphCanvas {
     };
 
     //used in some events to capture them
-    _doNothing = function doNothing(e) {
+    _doNothing doNothing(e) {
         e.preventDefault();
         return false;
     };
-    _doReturnTrue = function doNothing(e) {
+    _doReturnTrue doNothing(e) {
         e.preventDefault();
         return true;
     };
@@ -357,7 +357,7 @@ export class LGraphCanvas {
      * binds mouse, keyboard, touch and drag events to the canvas
      * @method bindEvents
      **/
-    bindEvents = function() {
+    bindEvents() {
         if (this._events_binded) {
             console.warn("LGraphCanvas: events already binded");
             return;
@@ -411,7 +411,7 @@ export class LGraphCanvas {
      * unbinds mouse events from the canvas
      * @method unbindEvents
      **/
-    unbindEvents = function() {
+    unbindEvents() {
         if (!this._events_binded) {
             console.warn("LGraphCanvas: no events binded");
             return;
@@ -448,7 +448,7 @@ export class LGraphCanvas {
         this._events_binded = false;
     };
 
-    static getFileExtension = function(url) {
+    static getFileExtension(url) {
         var question = url.indexOf("?");
         if (question != -1) {
             url = url.substr(0, question);
@@ -465,7 +465,7 @@ export class LGraphCanvas {
      * this is useful if you plant to render 3D objects inside your nodes, it uses litegl.js for webgl and canvas2DtoWebGL to emulate the Canvas2D calls in webGL
      * @method enableWebGL
      **/
-    enableWebGL = function() {
+    enableWebGL() {
         if (typeof GL === undefined) {
             throw "litegl.js must be included to use a WebGL canvas";
         }
@@ -494,7 +494,7 @@ export class LGraphCanvas {
      * @param {bool} fgcanvas if the foreground canvas is dirty (the one containing the nodes)
      * @param {bool} bgcanvas if the background canvas is dirty (the one containing the wires)
      */
-    setDirty = function(fgcanvas, bgcanvas) {
+    setDirty(fgcanvas, bgcanvas) {
         if (fgcanvas) {
             this.dirty_canvas = true;
         }
@@ -509,7 +509,7 @@ export class LGraphCanvas {
      * @method getCanvasWindow
      * @return {window} returns the window where the canvas is attached (the DOM root node)
      */
-    getCanvasWindow = function() {
+    getCanvasWindow() {
         if (!this.canvas) {
             return window;
         }
@@ -522,7 +522,7 @@ export class LGraphCanvas {
      *
      * @method startRendering
      */
-    startRendering = function() {
+    startRendering() {
         if (this.is_rendering) {
             return;
         } //already rendering
@@ -547,7 +547,7 @@ export class LGraphCanvas {
      *
      * @method stopRendering
      */
-    stopRendering = function() {
+    stopRendering() {
         this.is_rendering = false;
         /*
 	if(this.rendering_timer_id)
@@ -560,7 +560,7 @@ export class LGraphCanvas {
 
     /* LiteGraphCanvas input */
 
-    processMouseDown = function(e) {
+    processMouseDown(e) {
         if (!this.graph) {
             return;
         }
@@ -897,7 +897,7 @@ export class LGraphCanvas {
      * Called when a mouse move event has to be processed
      * @method processMouseMove
      **/
-    processMouseMove = function(e) {
+    processMouseMove(e) {
         if (this.autoresize) {
             this.resize();
         }
@@ -1142,7 +1142,7 @@ export class LGraphCanvas {
      * Called when a mouse up event has to be processed
      * @method processMouseUp
      **/
-    processMouseUp = function(e) {
+    processMouseUp(e) {
         if (!this.graph) {
             return;
         }
@@ -1383,7 +1383,7 @@ export class LGraphCanvas {
      * Called when a mouse wheel event has to be processed
      * @method processMouseWheel
      **/
-    processMouseWheel = function(e) {
+    processMouseWheel(e) {
         if (!this.graph || !this.allow_dragcanvas) {
             return;
         }
@@ -1413,7 +1413,7 @@ export class LGraphCanvas {
      * returns true if a position (in graph space) is on top of a node little corner box
      * @method isOverNodeBox
      **/
-    isOverNodeBox = function(node, canvasx, canvasy) {
+    isOverNodeBox(node, canvasx, canvasy) {
         var title_height = LiteGraph.NODE_TITLE_HEIGHT;
         if (
             isInsideRectangle(
@@ -1434,7 +1434,7 @@ export class LGraphCanvas {
      * returns true if a position (in graph space) is on top of a node input slot
      * @method isOverNodeInput
      **/
-    isOverNodeInput = function(
+    isOverNodeInput(
         node,
         canvasx,
         canvasy,
@@ -1480,7 +1480,7 @@ export class LGraphCanvas {
      * process a key event
      * @method processKey
      **/
-    processKey = function(e) {
+    processKey(e) {
         if (!this.graph) {
             return;
         }
@@ -1563,7 +1563,7 @@ export class LGraphCanvas {
         }
     };
 
-    copyToClipboard = function() {
+    copyToClipboard() {
         var clipboard_info = {
             nodes: [],
             links: []
@@ -1617,7 +1617,7 @@ export class LGraphCanvas {
         );
     };
 
-    pasteFromClipboard = function() {
+    pasteFromClipboard() {
         var data = localStorage.getItem("litegrapheditor_clipboard");
         if (!data) {
             return;
@@ -1656,7 +1656,7 @@ export class LGraphCanvas {
      * process a item drop event on top the canvas
      * @method processDrop
      **/
-    processDrop = function(e) {
+    processDrop(e) {
         e.preventDefault();
         this.adjustMouseEvent(e);
 
@@ -1690,7 +1690,7 @@ export class LGraphCanvas {
                     if (node.onDropData) {
                         //prepare reader
                         var reader = new FileReader();
-                        reader.onload = function(event) {
+                        reader.onload(event) {
                             //console.log(event.target);
                             var data = event.target.result;
                             node.onDropData(data, filename, file);
@@ -1724,7 +1724,7 @@ export class LGraphCanvas {
     };
 
     //called if the graph doesn't have a default drop item behaviour
-    checkDropItem = function(e) {
+    checkDropItem(e) {
         if (e.dataTransfer.files.length) {
             var file = e.dataTransfer.files[0];
             var ext = LGraphCanvas.getFileExtension(file.name).toLowerCase();
@@ -1740,7 +1740,7 @@ export class LGraphCanvas {
         }
     };
 
-    processNodeDblClicked = function(n) {
+    processNodeDblClicked(n) {
         if (this.onShowNodePanel) {
             this.onShowNodePanel(n);
         }
@@ -1752,7 +1752,7 @@ export class LGraphCanvas {
         this.setDirty(true);
     };
 
-    processNodeSelected = function(node, e) {
+    processNodeSelected(node, e) {
         this.selectNode(node, e && e.shiftKey);
         if (this.onNodeSelected) {
             this.onNodeSelected(node);
@@ -1763,7 +1763,7 @@ export class LGraphCanvas {
      * selects a given node (or adds it to the current selection)
      * @method selectNode
      **/
-    selectNode = function(
+    selectNode(
         node,
         add_to_current_selection
     ) {
@@ -1778,7 +1778,7 @@ export class LGraphCanvas {
      * selects several nodes (or adds them to the current selection)
      * @method selectNodes
      **/
-    selectNodes = function(
+    selectNodes(
         nodes,
         add_to_current_selection
     ) {
@@ -1826,7 +1826,7 @@ export class LGraphCanvas {
      * removes a node from the current selection
      * @method deselectNode
      **/
-    deselectNode = function(node) {
+    deselectNode(node) {
         if (!node.is_selected) {
             return;
         }
@@ -1861,7 +1861,7 @@ export class LGraphCanvas {
      * removes all nodes from the current selection
      * @method deselectAllNodes
      **/
-    deselectAllNodes = function() {
+    deselectAllNodes() {
         if (!this.graph) {
             return;
         }
@@ -1891,7 +1891,7 @@ export class LGraphCanvas {
      * deletes all nodes in the current selection from the graph
      * @method deleteSelectedNodes
      **/
-    deleteSelectedNodes = function() {
+    deleteSelectedNodes() {
         for (var i in this.selected_nodes) {
             var node = this.selected_nodes[i];
             //autoconnect when possible (very basic, only takes into account first input-output)
@@ -1918,7 +1918,7 @@ export class LGraphCanvas {
      * centers the camera on a given node
      * @method centerOnNode
      **/
-    centerOnNode = function(node) {
+    centerOnNode(node) {
         this.ds.offset[0] =
             -node.pos[0] -
             node.size[0] * 0.5 +
@@ -1934,7 +1934,7 @@ export class LGraphCanvas {
      * adds some useful properties to a mouse event, like the position in graph coordinates
      * @method adjustMouseEvent
      **/
-    adjustMouseEvent = function(e) {
+    adjustMouseEvent(e) {
         if (this.canvas) {
             var b = this.canvas.getBoundingClientRect();
             e.localX = e.clientX - b.left;
@@ -1958,7 +1958,7 @@ export class LGraphCanvas {
      * changes the zoom level of the graph (default is 1), you can pass also a place used to pivot the zoom
      * @method setZoom
      **/
-    setZoom = function(value, zooming_center) {
+    setZoom(value, zooming_center) {
         this.ds.changeScale(value, zooming_center);
         /*
 	if(!zooming_center && this.canvas)
@@ -1988,7 +1988,7 @@ export class LGraphCanvas {
      * converts a coordinate from graph coordinates to canvas2D coordinates
      * @method convertOffsetToCanvas
      **/
-    convertOffsetToCanvas = function(pos, out) {
+    convertOffsetToCanvas(pos, out) {
         return this.ds.convertOffsetToCanvas(pos, out);
     };
 
@@ -1996,12 +1996,12 @@ export class LGraphCanvas {
      * converts a coordinate from Canvas2D coordinates to graph space
      * @method convertCanvasToOffset
      **/
-    convertCanvasToOffset = function(pos, out) {
+    convertCanvasToOffset(pos, out) {
         return this.ds.convertCanvasToOffset(pos, out);
     };
 
     //converts event coordinates from canvas2D to graph coordinates
-    convertEventToCanvasOffset = function(e) {
+    convertEventToCanvasOffset(e) {
         var rect = this.canvas.getBoundingClientRect();
         return this.convertCanvasToOffset([
             e.clientX - rect.left,
@@ -2013,7 +2013,7 @@ export class LGraphCanvas {
      * brings a node to front (above all other nodes)
      * @method bringToFront
      **/
-    bringToFront = function(node) {
+    bringToFront(node) {
         var i = this.graph._nodes.indexOf(node);
         if (i == -1) {
             return;
@@ -2027,7 +2027,7 @@ export class LGraphCanvas {
      * sends a node to the back (below all other nodes)
      * @method sendToBack
      **/
-    sendToBack = function(node) {
+    sendToBack(node) {
         var i = this.graph._nodes.indexOf(node);
         if (i == -1) {
             return;
@@ -2042,7 +2042,7 @@ export class LGraphCanvas {
      * checks which nodes are visible (inside the camera area)
      * @method computeVisibleNodes
      **/
-    computeVisibleNodes = function(nodes, out) {
+    computeVisibleNodes(nodes, out) {
         var visible_nodes = out || [];
         visible_nodes.length = 0;
         nodes = nodes || this.graph._nodes;
@@ -2067,7 +2067,7 @@ export class LGraphCanvas {
      * renders the whole canvas content, by rendering in two separated canvas, one containing the background grid and the connections, and one containing the nodes)
      * @method draw
      **/
-    draw = function(force_canvas, force_bgcanvas) {
+    draw(force_canvas, force_bgcanvas) {
         if (!this.canvas) {
             return;
         }
@@ -2104,7 +2104,7 @@ export class LGraphCanvas {
      * draws the front canvas (the one containing all the nodes)
      * @method drawFrontCanvas
      **/
-    drawFrontCanvas = function() {
+    drawFrontCanvas() {
         this.dirty_canvas = false;
 
         if (!this.ctx) {
@@ -2310,7 +2310,7 @@ export class LGraphCanvas {
      * draws some useful stats in the corner of the canvas
      * @method renderInfo
      **/
-    renderInfo = function(ctx, x, y) {
+    renderInfo(ctx, x, y) {
         x = x || 0;
         y = y || 0;
 
@@ -2335,7 +2335,7 @@ export class LGraphCanvas {
      * draws the back canvas (the one containing the background and the connections)
      * @method drawBackCanvas
      **/
-    drawBackCanvas = function() {
+    drawBackCanvas() {
         var canvas = this.bgcanvas;
         if (
             canvas.width != this.canvas.width ||
@@ -2418,7 +2418,7 @@ export class LGraphCanvas {
                     this._bg_img.name = this.background_image;
                     this._bg_img.src = this.background_image;
                     var that = this;
-                    this._bg_img.onload = function() {
+                    this._bg_img.onload() {
                         that.draw(true, true);
                     };
                 }
@@ -2505,7 +2505,7 @@ export class LGraphCanvas {
      * draws the given node inside the canvas
      * @method drawNode
      **/
-    drawNode = function(node, ctx) {
+    drawNode(node, ctx) {
         var glow = false;
         this.current_node = node;
 
@@ -2893,7 +2893,7 @@ export class LGraphCanvas {
     };
 
     //used by this.over_link_center
-    drawLinkTooltip = function(ctx, link) {
+    drawLinkTooltip(ctx, link) {
         var pos = link._pos;
         ctx.fillStyle = "black";
         ctx.beginPath();
@@ -2952,7 +2952,7 @@ export class LGraphCanvas {
      **/
 
 
-    drawNodeShape = function(
+    drawNodeShape(
         node,
         ctx,
         size,
@@ -3247,7 +3247,7 @@ export class LGraphCanvas {
      * OPTIMIZE THIS: pre-catch connections position instead of recomputing them every time
      * @method drawConnections
      **/
-    drawConnections = function(ctx) {
+    drawConnections(ctx) {
         var now = LiteGraph.getTime();
         var visible_area = this.visible_area;
         margin_area[0] = visible_area[0] - 20;
@@ -3381,7 +3381,7 @@ export class LGraphCanvas {
      * @param {number} end_dir the direction enum
      * @param {number} num_sublines number of sublines (useful to represent vec3 or rgb)
      **/
-    renderLink = function(
+    renderLink(
         ctx,
         a,
         b,
@@ -3655,7 +3655,7 @@ export class LGraphCanvas {
     };
 
     //returns the link center point based on curvature
-    computeConnectionPoint = function(
+    computeConnectionPoint(
         a,
         b,
         t,
@@ -3710,7 +3710,7 @@ export class LGraphCanvas {
         return [x, y];
     };
 
-    drawExecutionOrder = function(ctx) {
+    drawExecutionOrder(ctx) {
         ctx.shadowColor = "transparent";
         ctx.globalAlpha = 0.25;
 
@@ -3750,7 +3750,7 @@ export class LGraphCanvas {
      * draws the widgets stored inside a node
      * @method drawNodeWidgets
      **/
-    drawNodeWidgets = function(
+    drawNodeWidgets(
         node,
         posY,
         ctx,
@@ -3993,7 +3993,7 @@ export class LGraphCanvas {
      * process an event on widgets
      * @method processNodeWidgets
      **/
-    processNodeWidgets = function(
+    processNodeWidgets(
         node,
         pos,
         event,
@@ -4182,7 +4182,7 @@ export class LGraphCanvas {
      * draws every group area in the background
      * @method drawGroups
      **/
-    drawGroups = function(canvas, ctx) {
+    drawGroups(canvas, ctx) {
         if (!this.graph) {
             return;
         }
@@ -4225,7 +4225,7 @@ export class LGraphCanvas {
         ctx.restore();
     };
 
-    adjustNodesSize = function() {
+    adjustNodesSize() {
         var nodes = this.graph._nodes;
         for (var i = 0; i < nodes.length; ++i) {
             nodes[i].size = nodes[i].computeSize();
@@ -4237,7 +4237,7 @@ export class LGraphCanvas {
      * resizes the canvas to a given size, if no size is passed, then it tries to fill the parentNode
      * @method resize
      **/
-    resize = function(width, height) {
+    resize(width, height) {
         if (!width && !height) {
             var parent = this.canvas.parentNode;
             width = parent.offsetWidth;
@@ -4260,7 +4260,7 @@ export class LGraphCanvas {
      * this feature was designed when graphs where meant to create user interfaces
      * @method switchLiveMode
      **/
-    switchLiveMode = function(transition) {
+    switchLiveMode(transition) {
         if (!transition) {
             this.live_mode = !this.live_mode;
             this.dirty_canvas = true;
@@ -4293,11 +4293,11 @@ export class LGraphCanvas {
         }, 1);
     };
 
-    onNodeSelectionChange = function(node) {
+    onNodeSelectionChange(node) {
         return; //disabled
     };
 
-    touchHandler = function(event) {
+    touchHandler(event) {
         //alert("foo");
         var touches = event.changedTouches,
             first = touches[0],
@@ -4348,7 +4348,7 @@ export class LGraphCanvas {
 
     /* CONTEXT MENU ********************/
 
-    static onGroupAdd = function(info, entry, mouse_event) {
+    static onGroupAdd(info, entry, mouse_event) {
         var canvas = LGraphCanvas.active_canvas;
         var ref_window = canvas.getCanvasWindow();
 
@@ -4357,7 +4357,7 @@ export class LGraphCanvas {
         canvas.graph.add(group);
     };
 
-    static onMenuAdd = function(node, options, e, prev_menu, callback) {
+    static onMenuAdd(node, options, e, prev_menu, callback) {
         var canvas = LGraphCanvas.active_canvas;
         var ref_window = canvas.getCanvasWindow();
 
@@ -4407,13 +4407,13 @@ export class LGraphCanvas {
         return false;
     };
 
-    static onMenuCollapseAll = function() {
+    static onMenuCollapseAll() {
     };
 
-    static onMenuNodeEdit = function() {
+    static onMenuNodeEdit() {
     };
 
-    static showMenuNodeOptionalInputs = function(
+    static showMenuNodeOptionalInputs(
         v,
         options,
         e,
@@ -4490,7 +4490,7 @@ export class LGraphCanvas {
         return false;
     };
 
-    static showMenuNodeOptionalOutputs = function(
+    static showMenuNodeOptionalOutputs(
         v,
         options,
         e,
@@ -4598,7 +4598,7 @@ export class LGraphCanvas {
         return false;
     };
 
-    static onShowMenuNodeProperties = function(
+    static onShowMenuNodeProperties(
         value,
         options,
         e,
@@ -4660,13 +4660,13 @@ export class LGraphCanvas {
         return false;
     };
 
-    static decodeHTML = function(str) {
+    static decodeHTML(str) {
         var e = document.createElement("div");
         e.innerText = str;
         return e.innerHTML;
     };
 
-    static onResizeNode = function(value, options, e, menu, node) {
+    static onResizeNode(value, options, e, menu, node) {
         if (!node) {
             return;
         }
@@ -4675,7 +4675,7 @@ export class LGraphCanvas {
     };
 
 
-    showLinkMenu = function(link, e) {
+    showLinkMenu(link, e) {
         var that = this;
         console.log(link);
         var options = ["Add Node", null, "Delete"];
@@ -4711,7 +4711,7 @@ export class LGraphCanvas {
         return false;
     };
 
-   static onShowPropertyEditor = function(item, options, e, menu, node) {
+   static onShowPropertyEditor(item, options, e, menu, node) {
         var input_html = "";
         var property = item.property || "title";
         var value = node[property];
@@ -4779,7 +4779,7 @@ export class LGraphCanvas {
         }
     };
 
-    prompt = function(title, value, callback, event) {
+    prompt(title, value, callback, event) {
         var that = this;
         var input_html = "";
         title = title || "";
@@ -4790,7 +4790,7 @@ export class LGraphCanvas {
         dialog.className = "graphdialog rounded";
         dialog.innerHTML =
             "<span class='name'></span> <input autofocus type='text' class='value'/><button class='rounded'>OK</button>";
-        dialog.close = function() {
+        dialog.close() {
             that.prompt_box = null;
             if (dialog.parentNode) {
                 dialog.parentNode.removeChild(dialog);
@@ -4876,7 +4876,7 @@ export class LGraphCanvas {
     };
 
     static search_limit = -1;
-    showSearchBox = function(event) {
+    showSearchBox(event) {
         var that = this;
         var input_html = "";
         var graphcanvas = LGraphCanvas.active_canvas;
@@ -4887,7 +4887,7 @@ export class LGraphCanvas {
         dialog.className = "litegraph litesearchbox graphdialog rounded";
         dialog.innerHTML =
             "<span class='name'>Search</span> <input autofocus type='text' class='value rounded'/><div class='helper'></div>";
-        dialog.close = function() {
+        dialog.close() {
             that.search_box = null;
             root_document.body.focus();
             root_document.body.style.overflow = "";
@@ -5170,7 +5170,7 @@ export class LGraphCanvas {
         return dialog;
     };
 
-    showEditPropertyValue = function(node, property, options) {
+    showEditPropertyValue(node, property, options) {
         if (!node || node.properties[property] === undefined) {
             return;
         }
@@ -5282,7 +5282,7 @@ export class LGraphCanvas {
         return dialog;
     };
 
-    createDialog = function(html, options) {
+    createDialog(html, options) {
         options = options || {};
 
         var dialog = document.createElement("div");
@@ -5314,7 +5314,7 @@ export class LGraphCanvas {
 
         this.canvas.parentNode.appendChild(dialog);
 
-        dialog.close = function() {
+        dialog.close() {
             if (this.parentNode) {
                 this.parentNode.removeChild(this);
             }
@@ -5323,15 +5323,15 @@ export class LGraphCanvas {
         return dialog;
     };
 
-    static onMenuNodeCollapse = function(value, options, e, menu, node) {
+    static onMenuNodeCollapse(value, options, e, menu, node) {
         node.collapse();
     };
 
-    static onMenuNodePin = function(value, options, e, menu, node) {
+    static onMenuNodePin(value, options, e, menu, node) {
         node.pin();
     };
 
-    static onMenuNodeMode = function(value, options, e, menu, node) {
+    static onMenuNodeMode(value, options, e, menu, node) {
         new LiteGraph.ContextMenu(
             ["Always", "On Event", "On Trigger", "Never"],
             { event: e, callback: inner_clicked, parentMenu: menu, node: node }
@@ -5361,7 +5361,7 @@ export class LGraphCanvas {
         return false;
     };
 
-    static onMenuNodeColors = function(value, options, e, menu, node) {
+    static onMenuNodeColors(value, options, e, menu, node) {
         if (!node) {
             throw "no node for color";
         }
@@ -5418,7 +5418,7 @@ export class LGraphCanvas {
         return false;
     };
 
-    static onMenuNodeShapes = function(value, options, e, menu, node) {
+    static onMenuNodeShapes(value, options, e, menu, node) {
         if (!node) {
             throw "no node passed";
         }
@@ -5441,7 +5441,7 @@ export class LGraphCanvas {
         return false;
     };
 
-    static onMenuNodeRemove = function(value, options, e, menu, node) {
+    static onMenuNodeRemove(value, options, e, menu, node) {
         if (!node) {
             throw "no node passed";
         }
@@ -5454,7 +5454,7 @@ export class LGraphCanvas {
         node.setDirtyCanvas(true, true);
     };
 
-    static onMenuNodeClone = function(value, options, e, menu, node) {
+    static onMenuNodeClone(value, options, e, menu, node) {
         if (node.clonable == false) {
             return;
         }
@@ -5483,7 +5483,7 @@ export class LGraphCanvas {
         black: { color: "#222", bgcolor: "#000", groupcolor: "#444" }
     };
 
-    getCanvasMenuOptions = function() {
+    getCanvasMenuOptions() {
         var options = null;
         if (this.getMenuOptions) {
             options = this.getMenuOptions();
@@ -5517,7 +5517,7 @@ export class LGraphCanvas {
     };
 
     //called by processContextMenu to extract the menu list
-    getNodeMenuOptions = function(node) {
+    getNodeMenuOptions(node) {
         var options = null;
 
         if (node.getMenuOptions) {
@@ -5614,7 +5614,7 @@ export class LGraphCanvas {
         return options;
     };
 
-    getGroupMenuOptions = function(node) {
+    getGroupMenuOptions(node) {
         var o = [
             { content: "Title", callback: LGraphCanvas.onShowPropertyEditor },
             {
@@ -5635,7 +5635,7 @@ export class LGraphCanvas {
         return o;
     };
 
-    processContextMenu = function(node, event) {
+    processContextMenu(node, event) {
         var that = this;
         var canvas = LGraphCanvas.active_canvas;
         var ref_window = canvas.getCanvasWindow();

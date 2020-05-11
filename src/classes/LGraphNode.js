@@ -67,7 +67,7 @@ export class LGraphNode{
     }
 
 
-    _ctor = function(title) {
+    _ctor(title) {
         this.title = title || "Unnamed";
         this.size = [LiteGraph.NODE_WIDTH, 60];
         this.graph = null;
@@ -107,7 +107,7 @@ export class LGraphNode{
      * configure a node from an object containing the serialized info
      * @method configure
      */
-    configure = function(info) {
+    configure(info) {
         if (this.graph) {
             this.graph._version++;
         }
@@ -208,7 +208,7 @@ export class LGraphNode{
      * @method serialize
      */
 
-    serialize = function() {
+    serialize() {
         //create serialization object
         var o = {
             id: this.id,
@@ -284,7 +284,7 @@ export class LGraphNode{
     };
 
     /* Creates a clone of this node */
-    clone = function() {
+    clone() {
         var node = LiteGraph.createNode(this.type);
         if (!node) {
             return null;
@@ -320,17 +320,17 @@ export class LGraphNode{
      * @method toString
      */
 
-    toString = function() {
+    toString() {
         return JSON.stringify(this.serialize());
     };
-    //deserialize = function(info) {} //this cannot be done from within, must be done in LiteGraph
+    //deserialize(info) {} //this cannot be done from within, must be done in LiteGraph
 
     /**
      * get the title string
      * @method getTitle
      */
 
-    getTitle = function() {
+    getTitle() {
         return this.title || this.constructor.title;
     };
 
@@ -340,7 +340,7 @@ export class LGraphNode{
      * @param {String} name
      * @param {*} value
      */
-    setProperty = function(name, value) {
+    setProperty(name, value) {
         if (!this.properties) {
             this.properties = {};
         }
@@ -371,7 +371,7 @@ export class LGraphNode{
      * @param {number} slot
      * @param {*} data
      */
-    setOutputData = function(slot, data) {
+    setOutputData(slot, data) {
         if (!this.outputs) {
             return;
         }
@@ -409,7 +409,7 @@ export class LGraphNode{
      * @param {number} slot
      * @param {String} datatype
      */
-    setOutputDataType = function(slot, type) {
+    setOutputDataType(slot, type) {
         if (!this.outputs) {
             return;
         }
@@ -439,7 +439,7 @@ export class LGraphNode{
      * @param {boolean} force_update if set to true it will force the connected node of this slot to output data into this link
      * @return {*} data or if it is not connected returns undefined
      */
-    getInputData = function(slot, force_update) {
+    getInputData(slot, force_update) {
         if (!this.inputs) {
             return;
         } //undefined;
@@ -480,7 +480,7 @@ export class LGraphNode{
      * @param {number} slot
      * @return {String} datatype in string format
      */
-    getInputDataType = function(slot) {
+    getInputDataType(slot) {
         if (!this.inputs) {
             return null;
         } //undefined;
@@ -512,7 +512,7 @@ export class LGraphNode{
      * @param {boolean} force_update if set to true it will force the connected node of this slot to output data into this link
      * @return {*} data or if it is not connected returns null
      */
-    getInputDataByName = function(
+    getInputDataByName(
         slot_name,
         force_update
     ) {
@@ -529,7 +529,7 @@ export class LGraphNode{
      * @param {number} slot
      * @return {boolean}
      */
-    isInputConnected = function(slot) {
+    isInputConnected(slot) {
         if (!this.inputs) {
             return false;
         }
@@ -542,7 +542,7 @@ export class LGraphNode{
      * @param {number} slot
      * @return {Object} object or null { link: id, name: string, type: string or 0 }
      */
-    getInputInfo = function(slot) {
+    getInputInfo(slot) {
         if (!this.inputs) {
             return null;
         }
@@ -558,7 +558,7 @@ export class LGraphNode{
      * @param {number} slot
      * @return {LGraphNode} node or null
      */
-    getInputNode = function(slot) {
+    getInputNode(slot) {
         if (!this.inputs) {
             return null;
         }
@@ -582,7 +582,7 @@ export class LGraphNode{
      * @param {string} name
      * @return {*} value
      */
-    getInputOrProperty = function(name) {
+    getInputOrProperty(name) {
         if (!this.inputs || !this.inputs.length) {
             return this.properties ? this.properties[name] : null;
         }
@@ -605,7 +605,7 @@ export class LGraphNode{
      * @param {number} slot
      * @return {Object}  object or null
      */
-    getOutputData = function(slot) {
+    getOutputData(slot) {
         if (!this.outputs) {
             return null;
         }
@@ -623,7 +623,7 @@ export class LGraphNode{
      * @param {number} slot
      * @return {Object}  object or null { name: string, type: string, links: [ ids of links in number ] }
      */
-    getOutputInfo = function(slot) {
+    getOutputInfo(slot) {
         if (!this.outputs) {
             return null;
         }
@@ -639,7 +639,7 @@ export class LGraphNode{
      * @param {number} slot
      * @return {boolean}
      */
-    isOutputConnected = function(slot) {
+    isOutputConnected(slot) {
         if (!this.outputs) {
             return false;
         }
@@ -655,7 +655,7 @@ export class LGraphNode{
      * @method isAnyOutputConnected
      * @return {boolean}
      */
-    isAnyOutputConnected = function() {
+    isAnyOutputConnected() {
         if (!this.outputs) {
             return false;
         }
@@ -673,7 +673,7 @@ export class LGraphNode{
      * @param {number} slot
      * @return {array}
      */
-    getOutputNodes = function(slot) {
+    getOutputNodes(slot) {
         if (!this.outputs || this.outputs.length == 0) {
             return null;
         }
@@ -707,7 +707,7 @@ export class LGraphNode{
      * @param {String} event name ( "on_play", ... ) if action is equivalent to false then the event is send to all
      * @param {*} param
      */
-    trigger = function(action, param) {
+    trigger(action, param) {
         if (!this.outputs || !this.outputs.length) {
             return;
         }
@@ -730,7 +730,7 @@ export class LGraphNode{
      * @param {*} param
      * @param {Number} link_id [optional] in case you want to trigger and specific output link in a slot
      */
-    triggerSlot = function(slot, param, link_id) {
+    triggerSlot(slot, param, link_id) {
         if (!this.outputs) {
             return;
         }
@@ -787,7 +787,7 @@ export class LGraphNode{
      * @param {Number} slot the index of the output slot
      * @param {Number} link_id [optional] in case you want to trigger and specific output link in a slot
      */
-    clearTriggeredSlot = function(slot, link_id) {
+    clearTriggeredSlot(slot, link_id) {
         if (!this.outputs) {
             return;
         }
@@ -826,7 +826,7 @@ export class LGraphNode{
      * @param {string} type string defining the output type ("vec3","number",...)
      * @param {Object} extra_info this can be used to have special properties of the property (like values, etc)
      */
-    addProperty = function(
+    addProperty(
         name,
         default_value,
         type,
@@ -858,7 +858,7 @@ export class LGraphNode{
      * @param {string} type string defining the output type ("vec3","number",...)
      * @param {Object} extra_info this can be used to have special properties of an output (label, special color, position, etc)
      */
-    addOutput = function(name, type, extra_info) {
+    addOutput(name, type, extra_info) {
         var o = { name: name, type: type, links: null };
         if (extra_info) {
             for (var i in extra_info) {
@@ -883,7 +883,7 @@ export class LGraphNode{
      * @method addOutputs
      * @param {Array} array of triplets like [[name,type,extra_info],[...]]
      */
-    addOutputs = function(array) {
+    addOutputs(array) {
         for (var i = 0; i < array.length; ++i) {
             var info = array[i];
             var o = { name: info[0], type: info[1], link: null };
@@ -911,7 +911,7 @@ export class LGraphNode{
      * @method removeOutput
      * @param {number} slot
      */
-    removeOutput = function(slot) {
+    removeOutput(slot) {
         this.disconnectOutput(slot);
         this.outputs.splice(slot, 1);
         for (var i = slot; i < this.outputs.length; ++i) {
@@ -942,7 +942,7 @@ export class LGraphNode{
      * @param {string} type string defining the input type ("vec3","number",...), it its a generic one use 0
      * @param {Object} extra_info this can be used to have special properties of an input (label, color, position, etc)
      */
-    addInput = function(name, type, extra_info) {
+    addInput(name, type, extra_info) {
         type = type || 0;
         var o = { name: name, type: type, link: null };
         if (extra_info) {
@@ -968,7 +968,7 @@ export class LGraphNode{
      * @method addInputs
      * @param {Array} array of triplets like [[name,type,extra_info],[...]]
      */
-    addInputs = function(array) {
+    addInputs(array) {
         for (var i = 0; i < array.length; ++i) {
             var info = array[i];
             var o = { name: info[0], type: info[1], link: null };
@@ -996,7 +996,7 @@ export class LGraphNode{
      * @method removeInput
      * @param {number} slot
      */
-    removeInput = function(slot) {
+    removeInput(slot) {
         this.disconnectInput(slot);
         this.inputs.splice(slot, 1);
         for (var i = slot; i < this.inputs.length; ++i) {
@@ -1024,7 +1024,7 @@ export class LGraphNode{
      * @param {[x,y]} pos position of the connection inside the node
      * @param {string} direction if is input or output
      */
-    addConnection = function(name, type, pos, direction) {
+    addConnection(name, type, pos, direction) {
         var o = {
             name: name,
             type: type,
@@ -1042,7 +1042,7 @@ export class LGraphNode{
      * @param {number} minHeight
      * @return {number} the total size
      */
-    computeSize = function(minHeight, out) {
+    computeSize(minHeight, out) {
         if (this.constructor.size) {
             return this.constructor.size.concat();
         }
@@ -1144,7 +1144,7 @@ export class LGraphNode{
      * @param {String} property name of the property
      * @return {Object} the object with all the available info
      */
-    getPropertyInfo = function(property) {
+    getPropertyInfo(property) {
         var info = null;
 
         //there are several ways to define info about a property
@@ -1185,7 +1185,7 @@ export class LGraphNode{
      * @param {Object} options the object that contains special properties of this widget
      * @return {Object} the created widget object
      */
-    addWidget = function(type, name, value, callback, options) {
+    addWidget(type, name, value, callback, options) {
         if (!this.widgets) {
             this.widgets = [];
         }
@@ -1247,7 +1247,7 @@ export class LGraphNode{
         return w;
     };
 
-    addCustomWidget = function(custom_widget) {
+    addCustomWidget(custom_widget) {
         if (!this.widgets) {
             this.widgets = [];
         }
@@ -1261,7 +1261,7 @@ export class LGraphNode{
      * @method getBounding
      * @return {Float32Array[4]} the total size
      */
-    getBounding = function(out) {
+    getBounding(out) {
         out = out || new Float32Array(4);
         out[0] = this.pos[0] - 4;
         out[1] = this.pos[1] - LiteGraph.NODE_TITLE_HEIGHT;
@@ -1281,7 +1281,7 @@ export class LGraphNode{
      * @param {number} y
      * @return {boolean}
      */
-    isPointInside = function(x, y, margin, skip_title) {
+    isPointInside(x, y, margin, skip_title) {
         margin = margin || 0;
 
         var margin_top = this.graph && this.graph.isLive() ? 0 : LiteGraph.NODE_TITLE_HEIGHT;
@@ -1321,7 +1321,7 @@ export class LGraphNode{
      * @param {number} y
      * @return {Object} if found the object contains { input|output: slot object, slot: number, link_pos: [x,y] }
      */
-    getSlotInPosition = function(x, y) {
+    getSlotInPosition(x, y) {
         //search for inputs
         var link_pos = new Float32Array(2);
         if (this.inputs) {
@@ -1371,7 +1371,7 @@ export class LGraphNode{
      * @param {string} name the name of the slot
      * @return {number} the slot (-1 if not found)
      */
-    findInputSlot = function(name) {
+    findInputSlot(name) {
         if (!this.inputs) {
             return -1;
         }
@@ -1390,7 +1390,7 @@ export class LGraphNode{
      * @param {string} name the name of the slot
      * @return {number} the slot (-1 if not found)
      */
-    findOutputSlot = function(name) {
+    findOutputSlot(name) {
         if (!this.outputs) {
             return -1;
         }
@@ -1410,7 +1410,7 @@ export class LGraphNode{
      * @param {number_or_string} target_slot the input slot of the target node (could be the number of the slot or the string with the name of the slot, or -1 to connect a trigger)
      * @return {Object} the link_info is created, otherwise null
      */
-    connect = function(slot, target_node, target_slot) {
+    connect(slot, target_node, target_slot) {
         target_slot = target_slot || 0;
 
         if (!this.graph) {
@@ -1572,7 +1572,7 @@ export class LGraphNode{
      * @param {LGraphNode} target_node the target node to which this slot is connected [Optional, if not target_node is specified all nodes will be disconnected]
      * @return {boolean} if it was disconnected successfully
      */
-    disconnectOutput = function(slot, target_node) {
+    disconnectOutput(slot, target_node) {
         if (slot.constructor === String) {
             slot = this.findOutputSlot(slot);
             if (slot == -1) {
@@ -1728,7 +1728,7 @@ export class LGraphNode{
      * @param {number_or_string} slot (could be the number of the slot or the string with the name of the slot)
      * @return {boolean} if it was disconnected successfully
      */
-    disconnectInput = function(slot) {
+    disconnectInput(slot) {
         //seek for the output slot
         if (slot.constructor === String) {
             slot = this.findInputSlot(slot);
@@ -1819,7 +1819,7 @@ export class LGraphNode{
      * @param {vec2} out [optional] a place to store the output, to free garbage
      * @return {[x,y]} the position
      **/
-    getConnectionPos = function(
+    getConnectionPos(
         is_input,
         slot_number,
         out
@@ -1907,7 +1907,7 @@ export class LGraphNode{
     };
 
     /* Force align to grid */
-    alignToGrid = function() {
+    alignToGrid() {
         this.pos[0] =
             LiteGraph.CANVAS_GRID_SIZE *
             Math.round(this.pos[0] / LiteGraph.CANVAS_GRID_SIZE);
@@ -1917,7 +1917,7 @@ export class LGraphNode{
     };
 
     /* Console output */
-    trace = function(msg) {
+    trace(msg) {
         if (!this.console) {
             this.console = [];
         }
@@ -1930,7 +1930,7 @@ export class LGraphNode{
     };
 
     /* Forces to redraw or the main canvas (LGraphNode) or the bg canvas (links) */
-    setDirtyCanvas = function(
+    setDirtyCanvas(
         dirty_foreground,
         dirty_background
     ) {
@@ -1943,13 +1943,13 @@ export class LGraphNode{
         ]);
     };
 
-    loadImage = function(url) {
+    loadImage(url) {
         var img = new Image();
         img.src = LiteGraph.node_images_path + url;
         img.ready = false;
 
         var that = this;
-        img.onload = function() {
+        img.onload=function() {
             this.ready = true;
             that.setDirtyCanvas(true);
         };
@@ -1958,7 +1958,7 @@ export class LGraphNode{
 
     //safe LGraphNode action execution (not sure if safe)
     /*
-executeAction = function(action)
+executeAction(action)
 {
 	if(action == "") return false;
 
@@ -1996,7 +1996,7 @@ executeAction = function(action)
 */
 
     /* Allows to get onMouseMove and onMouseUp events even if the mouse is out of focus */
-    captureInput = function(v) {
+    captureInput(v) {
         if (!this.graph || !this.graph.list_of_graphcanvas) {
             return;
         }
@@ -2019,7 +2019,7 @@ executeAction = function(action)
      * Collapse the node to make it smaller on the canvas
      * @method collapse
      **/
-    collapse = function(force) {
+    collapse(force) {
         this.graph._version++;
         if (this.constructor.collapsable === false && !force) {
             return;
@@ -2037,7 +2037,7 @@ executeAction = function(action)
      * @method pin
      **/
 
-    pin = function(v) {
+    pin(v) {
         this.graph._version++;
         if (v === undefined) {
             this.flags.pinned = !this.flags.pinned;
@@ -2046,7 +2046,7 @@ executeAction = function(action)
         }
     };
 
-    localToScreen = function(x, y, graphcanvas) {
+    localToScreen(x, y, graphcanvas) {
         return [
             (x + this.pos[0]) * graphcanvas.scale + graphcanvas.offset[0],
             (y + this.pos[1]) * graphcanvas.scale + graphcanvas.offset[1]
