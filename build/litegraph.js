@@ -3174,9 +3174,16 @@
             //     console.log('computeSize',it)
             //     largestY = largestY > it.last_y ? largestY : it.last_y;
             // });
-            widgets_height = this.widgets.length * (LiteGraph.NODE_WIDGET_HEIGHT + 4) + 8;
-            // console.log('title',this.title,'widgets_height',widgets_height,'largestY',largestY, 'nodes',this.widgets, '',getLastItem(this.widgets))
-        }
+            var nodeWidgetHeight = 0;
+            if(this.widgets){
+                this.widgets.forEach(w=>{
+                    nodeWidgetHeight += LiteGraph.NODE_WIDGET_HEIGHT* w.options.heightScale;
+                })
+            }
+
+            //this is the height of the widgets section of a node made up of height of all widgets
+            widgets_height = nodeWidgetHeight + LiteGraph.NODE_WIDGET_HEIGHT;
+          }
 
         //compute height using widgets height
         if (this.widgets_up)
@@ -3327,12 +3334,25 @@
             w.y = w.options.y;
         }
 
+        //Add widget height scale based on type of widget
+        w.options.heightScale = 1;
+        switch(w.type){
+            case 'textarea':
+                w.options.heightScale = 4;
+                w.options.wrapText = true;
+                break;
+            case 'fatButton':
+                w.options.heightScale = 2;
+                break;
+        }
+
         if (!callback && !w.options.callback && !w.options.property) {
             console.warn("LiteGraph addWidget(...) without a callback or property assigned");
         }
         if (type == "combo" && !w.options.values) {
             throw "LiteGraph addWidget('combo',...) requires to pass values in options: { values:['red','blue'] }";
         }
+
         this.widgets.push(w);
         this.size = this.computeSize();
         return w;
@@ -5558,9 +5578,17 @@ LGraphNode.prototype.executeAction = function(action)
                     this.resizing_node.inputs ? this.resizing_node.inputs.length : 0,
                     this.resizing_node.outputs ? this.resizing_node.outputs.length : 0
                 );
+
+                var nodeWidgetHeight = 0;
+                if(this.resizing_node.widgets){
+                    this.resizing_node.widgets.forEach(w=>{
+                        nodeWidgetHeight += LiteGraph.NODE_WIDGET_HEIGHT* w.options.heightScale;
+                    })
+                }
+
                 var min_height =
                     max_slots * LiteGraph.NODE_SLOT_HEIGHT +
-                    (this.resizing_node.widgets ? this.resizing_node.widgets.length : 0) * (LiteGraph.NODE_WIDGET_HEIGHT + 4) + 4;
+                     (nodeWidgetHeight + 4) + 4;
                 if (this.resizing_node.size[1] < min_height) {
                     this.resizing_node.size[1] = min_height;
                 }
@@ -8233,13 +8261,15 @@ LGraphNode.prototype.executeAction = function(action)
                 y = w.y;
             }
             w.last_y = y;
+            if(w.options.heightScale){
+                H = LiteGraph.NODE_WIDGET_HEIGHT * w.options.heightScale;
+            }
             ctx.strokeStyle = outline_color;
             ctx.fillStyle = "#222";
             ctx.textAlign = "left";
             if (w.disabled)
                 ctx.globalAlpha *= 0.5;
 
-            var heightIncrementScale = 1;
 
             switch (w.type) {
                 case "button":
@@ -8401,11 +8431,10 @@ LGraphNode.prototype.executeAction = function(action)
                     ctx.strokeStyle = outline_color;
                     ctx.fillStyle = background_color;
                     ctx.beginPath();
-                    heightIncrementScale = 4;
 
-                    var height = H * heightIncrementScale;
+                    var height = H;
                     if (show_text)
-                        ctx.roundRect(margin, posY, width - margin * 2, height, H * 0.5);
+                        ctx.roundRect(margin, posY, width - margin * 2, height, LiteGraph.NODE_WIDGET_HEIGHT * 0.5);
                     else
                         ctx.rect(margin, posY, width - margin * 2, height);
                     ctx.fill();
@@ -8419,11 +8448,12 @@ LGraphNode.prototype.executeAction = function(action)
                         ctx.fillStyle = secondary_text_color;
                         // TODO: make labels have own line
                         if (w.name != null) {
-                            ctx.fillText(w.name, margin * 2, y + H * 0.7);
+                            ctx.fillText(w.name+':', margin * 2, y + LiteGraph.NODE_WIDGET_HEIGHT * 0.7);
                         }
                         ctx.fillStyle = text_color;
-                        ctx.textAlign = "right";
-                        ctx.fillText(String(w.value).substr(0, 30), width - margin * 2, y + H * 0.7); //30 chars max
+                        ctx.textAlign = "left";
+                        //start typing into second line
+                        ctx.fillText(String(w.value).substr(0, 30), margin*2, y + (LiteGraph.NODE_WIDGET_HEIGHT*2) * 0.7); //30 chars max
                         ctx.restore();
                     }
                     break;
@@ -8433,7 +8463,7 @@ LGraphNode.prototype.executeAction = function(action)
                     }
                     break;
             }
-            posY += (H * heightIncrementScale) + 4;
+            posY += H + 4;
             ctx.globalAlpha = this.editor_alpha;
 
         }
@@ -8465,7 +8495,7 @@ LGraphNode.prototype.executeAction = function(action)
             var w = node.widgets[i];
             if (!w || w.disabled)
                 continue;
-            if (w == active_widget || (x > 6 && x < width - 12 && y > w.last_y && y < w.last_y + LiteGraph.NODE_WIDGET_HEIGHT)) {
+            if (w == active_widget || (x > 6 && x < width - 12 && y > w.last_y && y < w.last_y + (LiteGraph.NODE_WIDGET_HEIGHT*w.options.heightScale))) {
                 //inside widget
                 switch (w.type) {
                     case "button":
