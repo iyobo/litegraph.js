@@ -1,3 +1,4 @@
+import canvasTxt from 'canvas-txt'
 (function(global) {
     // *************************************************************
     //   LiteGraph CLASS                                     *******
@@ -8446,7 +8447,7 @@ LGraphNode.prototype.executeAction = function(action)
 
                         ctx.stroke();
                         ctx.fillStyle = secondary_text_color;
-                        // TODO: make labels have own line
+                        // make labels have own line
                         if (w.name != null) {
                             ctx.fillText(w.name+':', margin * 2, y + LiteGraph.NODE_WIDGET_HEIGHT * 0.7);
                         }
@@ -8454,6 +8455,13 @@ LGraphNode.prototype.executeAction = function(action)
                         ctx.textAlign = "left";
                         //start typing into second line
                         ctx.fillText(String(w.value).substr(0, 30), margin*2, y + (LiteGraph.NODE_WIDGET_HEIGHT*2) * 0.7); //30 chars max
+                        canvasTxt.fontSize = 24
+
+                        canvasTxt.drawText(ctx, w.value,
+                            margin*2,
+                            y + (LiteGraph.NODE_WIDGET_HEIGHT*2) * 0.7,
+                            width - margin * 2,
+                            height - LiteGraph.NODE_WIDGET_HEIGHT)
                         ctx.restore();
                     }
                     break;
