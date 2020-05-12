@@ -1,4 +1,3 @@
-import canvasTxt from 'canvas-txt'
 (function(global) {
     // *************************************************************
     //   LiteGraph CLASS                                     *******
@@ -29,13 +28,15 @@ import canvasTxt from 'canvas-txt'
         NODE_TEXT_COLOR: "#AAA",
         NODE_SUBTEXT_SIZE: 12,
         NODE_DEFAULT_COLOR: "#333",
-        NODE_DEFAULT_BGCOLOR: "#353535",
+        // NODE_DEFAULT_BGCOLOR: "#353535",
+        NODE_DEFAULT_BGCOLOR: "rgba(53, 53, 53, 0.6)",
         NODE_DEFAULT_BOXCOLOR: "#666",
         NODE_DEFAULT_SHAPE: "box",
         DEFAULT_SHADOW_COLOR: "rgba(0,0,0,0.5)",
         DEFAULT_GROUP_FONT: 24,
 
-        WIDGET_BGCOLOR: "#222",
+        // WIDGET_BGCOLOR: "#222222",
+        WIDGET_BGCOLOR: "rgba(34, 34, 34, 0.8)",
         WIDGET_OUTLINE_COLOR: "#666",
         WIDGET_TEXT_COLOR: "#DDD",
         WIDGET_SECONDARY_TEXT_COLOR: "#999",
@@ -4599,6 +4600,7 @@ LGraphNode.prototype.executeAction = function(action)
         }
 
         this.autoresize = options.autoresize;
+        this.canvasOptions = options;
     }
 
     global.LGraphCanvas = LiteGraph.LGraphCanvas = LGraphCanvas;
@@ -5961,7 +5963,7 @@ LGraphNode.prototype.executeAction = function(action)
         var block_default = false;
         //console.log(e); //debug
 
-        if (e.target.localName == "input") {
+        if (e.target.localName == "textarea") {
             return;
         }
 
@@ -8433,7 +8435,13 @@ LGraphNode.prototype.executeAction = function(action)
                     ctx.fillStyle = background_color;
                     ctx.beginPath();
 
+                    //calculate true height
+                    var canvasTxt = this.canvasOptions.tools.canvasTxt;
+                    // H = canvasTxt.getTextHeight(w.value, 'Arial','12');
+
                     var height = H;
+
+
                     if (show_text)
                         ctx.roundRect(margin, posY, width - margin * 2, height, LiteGraph.NODE_WIDGET_HEIGHT * 0.5);
                     else
@@ -8447,21 +8455,27 @@ LGraphNode.prototype.executeAction = function(action)
 
                         ctx.stroke();
                         ctx.fillStyle = secondary_text_color;
-                        // make labels have own line
+
+                        var startingX = margin+5;
+                        // Render label
                         if (w.name != null) {
-                            ctx.fillText(w.name+':', margin * 2, y + LiteGraph.NODE_WIDGET_HEIGHT * 0.7);
+                            ctx.fillText(w.name+':', startingX, y + LiteGraph.NODE_WIDGET_HEIGHT * 0.7);
                         }
                         ctx.fillStyle = text_color;
                         ctx.textAlign = "left";
-                        //start typing into second line
-                        ctx.fillText(String(w.value).substr(0, 30), margin*2, y + (LiteGraph.NODE_WIDGET_HEIGHT*2) * 0.7); //30 chars max
-                        canvasTxt.fontSize = 24
+
+                        // Render value text
+                        canvasTxt.align = 'left';
+                        canvasTxt.vAlign = 'top';
+                        canvasTxt.fontSize = 12;
 
                         canvasTxt.drawText(ctx, w.value,
-                            margin*2,
-                            y + (LiteGraph.NODE_WIDGET_HEIGHT*2) * 0.7,
-                            width - margin * 2,
-                            height - LiteGraph.NODE_WIDGET_HEIGHT)
+                            startingX,
+                            y + (LiteGraph.NODE_WIDGET_HEIGHT),
+                            width - (margin * 3),
+                            height - LiteGraph.NODE_WIDGET_HEIGHT);
+
+
                         ctx.restore();
                     }
                     break;
@@ -9211,7 +9225,7 @@ LGraphNode.prototype.executeAction = function(action)
             "<span class='name'></span><input autofocus type='text' class='value'/><button>OK</button>";
         var title = dialog.querySelector(".name");
         title.innerText = property;
-        var input = dialog.querySelector("input");
+        var input = dialog.querySelector("textarea");
         if (input) {
             input.value = value;
             input.addEventListener("blur", function(e) {
@@ -9278,7 +9292,9 @@ LGraphNode.prototype.executeAction = function(action)
         var dialog = document.createElement("div");
         dialog.className = "graphdialog rounded";
         dialog.innerHTML =
-            "<span class='name'></span> <input autofocus type='text' class='value'/><button class='rounded'>OK</button>";
+            `<span class='name'></span> 
+             <textarea autofocus cols='4' class='value valueInput'></textarea> 
+             <button class='rounded'>OK</button>`;
         dialog.close = function() {
             that.prompt_box = null;
             if (dialog.parentNode) {
@@ -9310,7 +9326,7 @@ LGraphNode.prototype.executeAction = function(action)
         var value_element = dialog.querySelector(".value");
         value_element.value = value;
 
-        var input = dialog.querySelector("input");
+        var input = dialog.querySelector("textarea");
         input.addEventListener("keydown", function(e) {
             modified = true;
             if (e.keyCode == 27) {
@@ -9420,7 +9436,7 @@ LGraphNode.prototype.executeAction = function(action)
         var timeout = null;
         var selected = null;
 
-        var input = dialog.querySelector("input");
+        var input = dialog.querySelector("textarea");
         if (input) {
             input.addEventListener("blur", function(e) {
                 this.focus();
@@ -9715,14 +9731,14 @@ LGraphNode.prototype.executeAction = function(action)
                 //setValue( e.options[e.selectedIndex].value );
             });
         } else if (type == "boolean") {
-            var input = dialog.querySelector("input");
+            var input = dialog.querySelector("textarea");
             if (input) {
                 input.addEventListener("click", function(e) {
                     setValue(!!input.checked);
                 });
             }
         } else {
-            var input = dialog.querySelector("input");
+            var input = dialog.querySelector("textarea");
             if (input) {
                 input.addEventListener("blur", function(e) {
                     this.focus();
@@ -10243,7 +10259,7 @@ LGraphNode.prototype.executeAction = function(action)
                     "<span class='name'>Name</span><input autofocus type='text'/><button>OK</button>",
                     options
                 );
-                var input = dialog.querySelector("input");
+                var input = dialog.querySelector(".textarea");
                 if (input && slot_info) {
                     input.value = slot_info.label || "";
                 }
